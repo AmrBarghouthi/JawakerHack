@@ -12,10 +12,11 @@ function addCard(card, cont) {
     newEl.appendChild(face);
 }
 let interval = setInterval(() => {
-    var target = document.querySelector("#fixed-notifications")
+    var target = document.querySelector("#game")
     if (target) {
         clearInterval(interval);
-        insertAfter(cont, target);
+        //insertAfter(cont, target);
+        target.parentElement.insertBefore(cont,target);
     }
 }, 50);
 function getSuitNumber(s) {
