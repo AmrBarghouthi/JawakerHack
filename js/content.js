@@ -16,7 +16,7 @@ let interval = setInterval(() => {
     if (target) {
         clearInterval(interval);
         //insertAfter(cont, target);
-        target.parentElement.insertBefore(cont,target);
+        target.parentElement.insertBefore(cont, target);
     }
 }, 50);
 function getSuitNumber(s) {
@@ -38,14 +38,15 @@ function getRankNumber(r) {
     if (r == 'J')
         return 10;
     let n = parseInt(r);
-    return n-1;
-    
+    return n - 1;
+
 }
 let stack = [];
-let interval2 = setInterval(() => {
+let traceTable = () => {
     var target = document.querySelector("#table-stack")
     if (target) {
         clearInterval(interval2);
+
         var observer = new MutationObserver(function (mutations) {
             if (mutations.length == 1) {
                 if (mutations[0].addedNodes.length != 0) {
@@ -63,7 +64,7 @@ let interval2 = setInterval(() => {
                         else {
                             let ra = getRankNumber(A[1]);
                             let rb = getRankNumber(B[1]);
-                            return ra<rb?-1:1;
+                            return ra < rb ? -1 : 1;
                         }
                     });
                     for (let i = 0; i < stack.length; i++)
@@ -79,41 +80,17 @@ let interval2 = setInterval(() => {
         var config = { attributes: true, childList: true, characterData: true };
         // pass in the target node, as well as the observer options
         observer.observe(target, config);
-    }
-
-}, 50);
-/*
-let stack = [];
-let interval = setInterval(() => {
-    var target = document.querySelector("#table-stack")
-    if (target) {
-        clearInterval(interval);
-        console.log(target)
-        var observer = new MutationObserver(function (mutations) {
-            if (mutations.length == 1)
-            {
-                let cardName = mutations[0].addedNodes[0].className.split(" ")[2];
-                console.log(cardName);
-                stack.push(cardName);
-                stack = [...new Set(stack)];
-                if(stack.length == 52)
-                    stack = [];
-                for(let i=0;i<stack.length;i++){
-                    let cardContainors = document.querySelectorAll(".card-icons-container");
-                    let newEl = document.createElement('div');
-                    newEl.className = "card face-up "+stack[i];
-                    cardContainors[2].childNodes[1].appendChild(newEl);
-                    let face = document.createElement("div");
-                    face.className= "face";
-                    newEl.appendChild(face);
-
-                }
+        let interval3 = setInterval(() => {
+            var target = document.querySelector("#table-stack");
+            if (target == null) {
+                interval2 = setInterval(traceTable, 50);
+                observer.disconnect();
+                clearInterval(interval3);
+                stack = [];
+                cont.innerHTML = '';
             }
-        });
-        // configuration of the observer:
-        var config = { attributes: true, childList: true, characterData: true };
-        // pass in the target node, as well as the observer options
-        observer.observe(target, config);
+        }, 50);
     }
-}, 50);
-*/
+
+}
+let interval2 = setInterval(traceTable, 50);
