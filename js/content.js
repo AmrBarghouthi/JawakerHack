@@ -41,6 +41,19 @@ function getRankNumber(r) {
     return n - 1;
 
 }
+function sortCompritor(a,b)
+{
+    let A = a.split('-');
+    let B = b.split('-');
+    let sa = getSuitNumber(A[0]);
+    let sb = getSuitNumber(B[0]);
+    if (sa !== sb)
+        return sa < sb ? -1 : 1;
+    else {
+        let ra = getRankNumber(A[1]);
+        let rb = getRankNumber(B[1]);
+        return ra < rb ? -1 : 1;
+}
 let stack = [];
 let traceTable = () => {
     var target = document.querySelector("#table-stack")
@@ -54,19 +67,7 @@ let traceTable = () => {
                     let cardName = mutations[0].addedNodes[0].className.split(" ")[2];
                     console.log(cardName);
                     stack.push(cardName);
-                    stack.sort((a, b) => {
-                        let A = a.split('-');
-                        let B = b.split('-');
-                        let sa = getSuitNumber(A[0]);
-                        let sb = getSuitNumber(B[0]);
-                        if (sa !== sb)
-                            return sa < sb ? -1 : 1;
-                        else {
-                            let ra = getRankNumber(A[1]);
-                            let rb = getRankNumber(B[1]);
-                            return ra < rb ? -1 : 1;
-                        }
-                    });
+                    stack.sort(sortCompritor);
                     for (let i = 0; i < stack.length; i++)
                         addCard(stack[i], cont);
                     if (document.querySelectorAll(".hand")[0].childElementCount == 0) {
@@ -88,6 +89,13 @@ let traceTable = () => {
                 clearInterval(interval3);
                 stack = [];
                 cont.innerHTML = '';
+                interval = setInterval(() => {
+                    var target = document.querySelector("#game")
+                    if (target) {
+                        clearInterval(interval);
+                        target.parentElement.insertBefore(cont, target);
+                    }
+                }, 50);
             }
         }, 50);
     }
