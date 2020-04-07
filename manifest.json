@@ -16,12 +16,5 @@
             ],
             "run_at": "document_end"
         }
-    ],
-    "permissions": [
-        "tabs",
-        "contextMenus",
-        "webRequest",
-        "webRequestBlocking",
-        "<all_urls>"
     ]
 }
