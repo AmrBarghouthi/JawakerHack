@@ -59,14 +59,18 @@ let traceTable = () => {
     var target = document.querySelector("#table-stack");
     var target2 = document.querySelector("#upcards");
     let observer;
+    console.log("tracetable");
     if (target) {
         clearInterval(interval2);
+        console.log("target found");
+
         observer = new MutationObserver(function (mutations) {
+            console.log("MutationObserver");
+
             if (mutations.length == 1) {
                 if (mutations[0].addedNodes.length != 0) {
                     cont.innerHTML = '';
                     let cardName = mutations[0].addedNodes[0].className.split(" ")[2];
-                    console.log(cardName);
                     stack.push(cardName);
                     stack.sort(sortCompritor);
                     for (let i = 0; i < stack.length; i++)
@@ -83,8 +87,9 @@ let traceTable = () => {
         // pass in the target node, as well as the observer options
         observer.observe(target, config);
         let interval3 = setInterval(() => {
-            var target = document.querySelector("#table-stack");
-            if (target == null) {
+            console.log(target === document.querySelector("#table-stack"))
+            if (target !== document.querySelector("#table-stack")) {
+                console.log("interval3 game not found")
                 interval2 = setInterval(traceTable, 50);
                 observer.disconnect();
                 clearInterval(interval3);
@@ -109,19 +114,17 @@ let traceTable = () => {
             for (let i = 0; i < cardsUP.childNodes.length; i++) {
                 let child = cardsUP.childNodes[i];
                 let cardName = child.className.split(" ")[2];
-                if(cardName == "face-up")
+                if (cardName == "face-up")
                     cardName = child.className.split(" ")[3]
-                console.log(cardName)
                 stack.push(cardName);
             }
             stack.sort(sortCompritor);
-            stack.forEach((e)=>addCard(e,cont));
+            stack.forEach((e) => addCard(e, cont));
         });
         var config = { attributes: true, childList: true, characterData: true };
         observer.observe(target2, config);
         let interval3 = setInterval(() => {
-            var target = document.querySelector("#upcards");
-            if (target == null) {
+            if (target2 !== document.querySelector("#upcards")) {
                 interval2 = setInterval(traceTable, 50);
                 observer.disconnect();
                 clearInterval(interval3);
