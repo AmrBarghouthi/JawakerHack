@@ -59,14 +59,9 @@ let traceTable = () => {
     var target = document.querySelector("#table-stack");
     var target2 = document.querySelector("#upcards");
     let observer;
-    console.log("tracetable");
     if (target) {
         clearInterval(interval2);
-        console.log("target found");
-
         observer = new MutationObserver(function (mutations) {
-            console.log("MutationObserver");
-
             if (mutations.length == 1) {
                 if (mutations[0].addedNodes.length != 0) {
                     cont.innerHTML = '';
@@ -87,9 +82,7 @@ let traceTable = () => {
         // pass in the target node, as well as the observer options
         observer.observe(target, config);
         let interval3 = setInterval(() => {
-            console.log(target === document.querySelector("#table-stack"))
             if (target !== document.querySelector("#table-stack")) {
-                console.log("interval3 game not found")
                 interval2 = setInterval(traceTable, 50);
                 observer.disconnect();
                 clearInterval(interval3);
