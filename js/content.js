@@ -62,6 +62,7 @@ let traceTable = () => {
     if (target) {
         clearInterval(interval2);
         observer = new MutationObserver(function (mutations) {
+            console.log(mutations)
             if (mutations.length == 1) {
                 if (mutations[0].addedNodes.length != 0) {
                     cont.innerHTML = '';
@@ -70,15 +71,12 @@ let traceTable = () => {
                     stack.sort(sortCompritor);
                     for (let i = 0; i < stack.length; i++)
                         addCard(stack[i], cont);
-                    if (document.querySelectorAll(".hand")[0].childElementCount == 0) {
-                        stack = [];
-                        cont.innerHTML = '';
-                    }
+
                 }
             }
         });
         // configuration of the observer:
-        var config = { attributes: true, childList: true, characterData: true };
+        var config = { attributes: false, childList: true, characterData: true };
         // pass in the target node, as well as the observer options
         observer.observe(target, config);
         let interval3 = setInterval(() => {
@@ -114,7 +112,7 @@ let traceTable = () => {
             stack.sort(sortCompritor);
             stack.forEach((e) => addCard(e, cont));
         });
-        var config = { attributes: true, childList: true, characterData: true };
+        var config = { attributes: false, childList: true, characterData: true };
         observer.observe(target2, config);
         let interval3 = setInterval(() => {
             if (target2 !== document.querySelector("#upcards")) {
@@ -135,3 +133,26 @@ let traceTable = () => {
     }
 }
 let interval2 = setInterval(traceTable, 50);
+
+
+ 
+
+let onmessage =App.initSock.onmessage;
+ let newOmessage = (e)=>{
+    let data = JSON.parse(e.data);
+    if(data[0]=="runEngineCommands")
+    {
+        let cmds = data[2].cmds;
+        for(let i=0;i<cmds.length;i++)
+        {
+            if(cmds[i][0]=="reShuffle")
+            {
+                stack = [];
+                cont.innerHTML = '';
+                console.log("clear")
+            }
+        }
+    }
+    onmessage(e)
+}
+App.initSock.onmessage = newOmessage;
